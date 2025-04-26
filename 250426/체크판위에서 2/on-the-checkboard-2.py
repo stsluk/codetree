@@ -2,17 +2,22 @@ R, C = map(int, input().split())
 grid = [list(input().split()) for _ in range(R)]
 
 # Please write your code here.
-ans = 0
+def jump(a, b, c, d, k):
+    # initial place = [a, b]
+    # final place = [c, d]
+    # how many jump = k
+    if k == 0:
+        if grid[a][b] != grid[c-1][d-1]: return 1
+        else: return 0
+    
+    ans = 0
+    for i in range(a+1, c-k):
+        for j in range(b+1, d-k):
+            if grid[i][j] != grid[a][b]:
+                # jump success
+                ans += jump(i, j, c, d, k-1)
+    return ans
 
-# k = 0
-for i in range(1, R-2):
-    for j in range(1, C-2):
-        if grid[i][j] != grid[0][0]:
-            # one_jump = [i, j]
-            for k in range(i+1, R-1):
-                for l in range(j+1, C-1):
-                    if grid[k][l] != grid[i][j]:
-                        # two_jump = [k, l]
-                        if grid[k][l] != grid[R-1][C-1]:
-                            ans += 1
+
+ans = jump(0, 0, R, C, 2)
 print(ans)
