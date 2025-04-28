@@ -16,7 +16,7 @@ def judgement_win(i, j, ki, kj):
     for k in range(1, 5):
         x = i + ki*k
         y = j + kj*k
-        if not ((0 <= x < 19) or (0 <= y < 19)):
+        if not ((0 <= x < 19) and (0 <= y < 19)):
             return False
         if board[i][j] != board[x][y]:
             return False
