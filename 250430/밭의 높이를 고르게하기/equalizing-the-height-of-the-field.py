@@ -9,11 +9,11 @@ cnt = 0 # total_price에 몇 개의 밭의 비용을 더했는 지
 for i in range(N):
     price[i] = abs(H-arr[i])
     total_price += price[i]
-    if cnt < 3:
+    if cnt < T:
         cnt += 1
-        if cnt == 3:
+        if cnt == T:
             ans_price = min(ans_price, total_price)
         continue
-    total_price -= price[i-3]
+    total_price -= price[i-T]
     ans_price = min(ans_price, total_price)
 print(ans_price)
