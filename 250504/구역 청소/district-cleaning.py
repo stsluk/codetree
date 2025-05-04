@@ -7,5 +7,5 @@ if a > c: a, b, c, d = c, d, a, b
 if b < c:
     ans = (b-a) + (d-c)
 else:
-    ans = d-a
+    ans = max(b, d)-a
 print(ans)
