@@ -6,6 +6,9 @@ dic = dic[:n]
 for _ in range(m):
     c, u = input().split()
     if _ < p-1: continue
+    if (_ == p-1) and (u == '0'):
+        dic = []
+        break
     if c in dic:
         i = dic.index(c)
         del dic[i]
