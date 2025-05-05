@@ -4,7 +4,7 @@ messages = [tuple(input().split()) for _ in range(m)]
 
 # 모두 읽은 채팅이라면 읽지 않은 사람은 없습니다.
 if int(messages[p - 1][1]) == 0:
-    sys.exit()
+    exit()
 
 read = [False for _ in range(n)]
 # 각 사람에 대해 채팅을 읽었을지 안 읽었을지 판단합니다.
