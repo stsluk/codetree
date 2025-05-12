@@ -5,7 +5,7 @@ grid = [list(map(int, input().split())) for _ in range(n)]
 def best_mining(i, j):
     ans = grid[i][j]
     gold = grid[i][j]
-    for k in range(1, n):
+    for k in range(1, 2*n):
         for l in range(k):
             if (0 <= i-k+l < n) and (0 <= j-l < n):
                 gold += grid[i-k+l][j-l]
