@@ -1,30 +1,36 @@
-n, m = map(int, input().split())
-grid = [list(map(int, input().split())) for _ in range(n)]
-
-# Please write your code here.
-def best_mining(i, j):
-    ans = grid[i][j]
-    gold = grid[i][j]
-    for k in range(1, 2*n):
-        for l in range(k):
-            if (0 <= i-k+l < n) and (0 <= j-l < n):
-                gold += grid[i-k+l][j-l]
-        for l in range(k):
-            if (0 <= i+l < n) and (0 <= j-k+l < n):
-                gold += grid[i+l][j-k+l]
-        for l in range(1, k+1):
-            if (0 <= i-k+l < n) and (0 <= j+l < n):
-                gold += grid[i-k+l][j+l]
-        for l in range(1, k+1):
-            if (0 <= i+l < n) and (0 <= j+k-l < n):
-                gold += grid[i+l][j+k-l]
-        if gold*m - (k*k + (k+1)*(k+1)) >= 0: ans = gold
-    return ans
+# 변수 선언 및 입력
+n, m = tuple(map(int, input().split()))
+grid = [
+    list(map(int, input().split()))
+    for _ in range(n)
+]
 
 
-ans = 0
-for i in range(n):
-    for j in range(n):
-        ans = max(ans, best_mining(i, j))
-        # print(i, j, ':', best_mining(i, j))
-print(ans)
+# 주어진 k에 대하여 마름모의 넓이를 반환합니다.
+def get_area(k):
+    return k * k + (k + 1) * (k + 1)
+
+
+# 주어진 k에 대하여 채굴 가능한 금의 개수를 반환합니다.
+def get_num_of_gold(row, col, k):
+    return sum([
+        grid[i][j]
+        for i in range(n)
+        for j in range(n)
+        if abs(row - i) + abs(col - j) <= k
+    ])
+
+
+max_gold = 0
+
+# 격자의 각 위치가 마름모의 중앙일 때 채굴 가능한 금의 개수를 구합니다.
+for row in range(n):
+    for col in range(n):
+        for k in range(2 * (n - 1) + 1):
+            num_of_gold = get_num_of_gold(row, col, k)
+            
+            # 손해를 보지 않으면서 채굴할 수 있는 최대 금의 개수를 저장합니다.
+            if num_of_gold * m >= get_area(k):
+                max_gold = max(max_gold, num_of_gold)
+
+print(max_gold)
