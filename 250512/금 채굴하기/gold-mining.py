@@ -18,8 +18,7 @@ def best_mining(i, j):
         for l in range(1, k+1):
             if (0 <= i+l < n) and (0 <= j+k-l < n):
                 gold += grid[i+l][j+k-l]
-        if gold*m - (k*k + (k+1)*(k+1)) > 0:
-            ans = gold
+        if gold*m - (k*k + (k+1)*(k+1)) >= 0: ans = gold
     return ans
 
 
