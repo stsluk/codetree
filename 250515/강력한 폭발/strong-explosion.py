@@ -1,58 +1,53 @@
-import copy
-
 n = int(input())
-grid = [list(map(int, input().split())) for _ in range(n)]
-
-# Please write your code here.
 bombs = []
-bombN = 0
+bomb_N = 0
 for i in range(n):
+    arr = list(map(int, input().split()))
     for j in range(n):
-        if grid[i][j] == 1:
-            bombs.append((i, j))
-            bombN += 1
-
-def bomb_area(i, g):
-    if i == bombN:
-        return get_area(g)
-
-    ans = 0
-    a = copy.deepcopy(g)
-    y, x = bombs[i]
-
-    # case 1
-    for k in range(-2, 3):
-        if 0 <= y+k < n:
-            a[y+k][x] = 1
-    ans = max(ans, bomb_area(i+1, a[:]))
-    for k in range(-2, 3):
-        if 0 <= y+k < n:
-            a[y+k][x] = g[y+k][x]
-    
-    # case 2
-    for ky, kx in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
-        if (0 <= y+ky < n) and (0 <= x+kx < n):
-            a[y+ky][x+kx] = 1
-    ans = max(ans, bomb_area(i+1, a[:]))
-    for ky, kx in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
-        if (0 <= y+ky < n) and (0 <= x+kx < n):
-            a[y+ky][x+kx] = g[y+ky][x+kx]
-    
-    # case 3
-    for ky, kx in [(-1, -1), (-1, 1), (1, 1), (1, -1)]:
-        if (0 <= y+ky < n) and (0 <= x+kx < n):
-            a[y+ky][x+kx] = 1
-    ans = max(ans, bomb_area(i+1, a[:]))
-    
-    return ans
+        if arr[j] == 1: bombs.append((i, j)); bomb_N += 1
+bombed = [[False for i in range(n)] for j in range(n)]
+bomb_type = [5 for _ in range(bomb_N)]
 
 
-def get_area(g):
-    ans = 0
+def bomb(y, x, k):
+    bomb_shapes = [
+        [[-2, 0], [-1, 0], [0, 0], [1, 0], [2, 0]],
+        [[-1, 0], [1, 0], [0, 0], [0, -1], [0, 1]],
+        [[-1, -1], [-1, 1], [0, 0], [1, -1], [1, 1]]
+    ]
+
+    for dy, dx in bomb_shapes[k]:
+        ny = y + dy; nx = x + dx
+        if (0 <= ny < n) and (0 <= nx < n):
+            bombed[ny][nx] = True
+
+
+def calc():
     for i in range(n):
         for j in range(n):
-            if g[i][j] == 1: ans += 1
+            bombed[i][j] = False
+    
+    for i in range(bomb_N):
+        y, x = bombs[i]
+        bomb(y, x, bomb_type[i])
+    
+    area = 0
+    for i in range(n):
+        for j in range(n):
+            if bombed[i][j]: area += 1
+    return area
+
+
+def find(cnt):
+    if cnt == bomb_N:
+        return calc()
+    
+    ans = 0
+    for i in range(3):
+        bomb_type[cnt] = i
+        ans = max(find(cnt+1), ans)
+        bomb_type[cnt] = 5
     return ans
 
 
-print(bomb_area(0, grid))
+print(find(0))
