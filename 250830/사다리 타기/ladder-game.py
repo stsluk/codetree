@@ -13,11 +13,12 @@ def check_result(x, li):
 r = [999999999]
 def optimization(k, ans):
     if a == want: r[0] = min(ans, r[0])
+    if k >= m: return 
 
-    for i in range(k, m):
-        check_result(edges[i][0], a)
-        optimization(k+1, ans+1)
-        check_result(edges[i][0], a)
+    check_result(edges[k][0], a)
+    optimization(k+1, ans+1)
+    check_result(edges[k][0], a)
+    optimization(k+1, ans)
 
 
 want = [i+1 for i in range(n)]
