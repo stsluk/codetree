@@ -4,17 +4,22 @@ weight = [list(map(int, input().split())) for _ in range(n)]
 prices = [[0 for _ in range(n-1)] for _ in range(n)]
 max_prices = [0]
 for i in range(n):
-    for j in range(n-1):
+    for j in range(n-m+1):
+        choose = weight[i][j:j+m]
         price = 0
-        a, b = weight[i][j], weight[i][j+1]
-        if a + b <= c:
-            price = a*a + b*b
+        if sum(choose) <= c:
+            for k in choose:
+                price += k*k
         else:
-            if a < b: a, b = b, a
+            dp = [0] * (c+1)
+    
+            for num in choose:
+                for w in range(c, num-1, -1):
+                    dp[w] = max(dp[w], dp[w - num] + num * num)
 
-            if a <= c: price = a*a
-            elif b <= c: price = b*b
+            price = max(dp)
         prices[i][j] = price
+
     max_prices.append(max(prices[i]))
 
 
