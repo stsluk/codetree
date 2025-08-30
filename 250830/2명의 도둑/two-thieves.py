@@ -1,7 +1,7 @@
 n, m, c = map(int, input().split())
 weight = [list(map(int, input().split())) for _ in range(n)]
 
-prices = [[0 for _ in range(n-1)] for _ in range(n)]
+prices = [[0 for _ in range(n-m+1)] for _ in range(n)]
 max_prices = [0]
 for i in range(n):
     for j in range(n-m+1):
@@ -32,12 +32,16 @@ for i in range(1, n+1):
 
 k = max_prices[mr2]
 
-for i in range(n-1):
+non_possible = set()
+for i in range(n-m+1):
     if prices[mr1-1][i] == max_prices[mr1]:
-        non_possible = {i-1, i, i+1}
+        non_possible.add(i)
+        for d in range(1, m):
+            non_possible.add(i+d)
+            non_possible.add(i-d)
         break
 
-for i in range(n-1):
+for i in range(n-m+1):
     if i in non_possible: continue
     if k < prices[mr1-1][i]: k = prices[mr1-1][i]
 
